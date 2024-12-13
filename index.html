@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Community Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .auth-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <!-- Authentication Container -->
+    <div id="auth-container" class="auth-container p-8 w-96 text-center">
+        <!-- Toggle Switch -->
+        <div class="flex mb-6 justify-center">
+            <button id="login-toggle" class="mx-2 px-4 py-2 bg-blue-500 text-white rounded-l">Login</button>
+            <button id="signup-toggle" class="mx-2 px-4 py-2 bg-purple-500 text-white rounded-r">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-4">
+            <input type="text" id="login-username" placeholder="Username"
+                class="w-full p-3 rounded bg-white bg-opacity-20 text-white placeholder-gray-300">
+            <input type="password" id="login-password" placeholder="Password"
+                class="w-full p-3 rounded bg-white bg-opacity-20 text-white placeholder-gray-300">
+            <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition">
+                Login
+            </button>
+        </form>
+
+        <!-- Signup Form (Hidden by Default) -->
+        <form id="signup-form" class="space-y-4 hidden">
+            <input type="text" id="signup-username" placeholder="Choose Username"
+                class="w-full p-3 rounded bg-white bg-opacity-20 text-white placeholder-gray-300">
+            <input type="password" id="signup-password" placeholder="Create Password"
+                class="w-full p-3 rounded bg-white bg-opacity-20 text-white placeholder-gray-300">
+            <input type="password" id="signup-confirm-password" placeholder="Confirm Password"
+                class="w-full p-3 rounded bg-white bg-opacity-20 text-white placeholder-gray-300">
+            <button type="submit" class="w-full bg-purple-600 text-white p-3 rounded hover:bg-purple-700 transition">
+                Sign Up
+            </button>
+        </form>
+
+        <!-- Error Message Container -->
+        <div id="error-message" class="mt-4 text-red-500"></div>
+    </div>
+
+    <!-- Main App Container (Initially Hidden) -->
+    <div id="main-app" class="hidden w-full">
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full bg-gray-800 text-white p-4 flex justify-between">
+            <div class="flex space-x-4">
+                <button data-section="chat" class="nav-btn">Chat</button>
+                <button data-section="marketplace" class="nav-btn">Marketplace</button>
+                <button data-section="community" class="nav-btn">Community</button>
+                <button data-section="games" class="nav-btn">Games</button>
+            </div>
+            <div>
+                <span id="username-display"></span>
+                <button id="logout-btn" class="ml-4 bg-red-500 px-3 py-1 rounded">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Sections -->
+        <div class="container mx-auto mt-20 p-4">
+            <!-- Chat Section -->
+            <section id="chat-section" class="hidden">
+                <div class="bg-white rounded-lg shadow-lg">
+                    <div class="p-4 border-b">
+                        <input type="text" id="group-name" placeholder="Create Group" class="w-full p-2 border rounded">
+                        <button id="create-group" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Create Group</button>
+                    </div>
+                    <div id="chat-groups" class="p-4 grid grid-cols-3 gap-4"></div>
+                    <div id="chat-messages" class="h-96 overflow-y-auto p-4"></div>
+                    <div class="p-4 border-t flex">
+                        <input type="text" id="message-input" class="flex-grow p-2 border rounded-l" placeholder="Type a message...">
+                        <button id="send-message" class="bg-blue-500 text-white px-4 rounded-r">Send</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marketplace Section -->
+            <section id="marketplace-section" class="hidden">
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg">
+                        <h2 class="text-xl font-bold mb-4">Sell an Item</h2>
+                        <input type="text" id="item-name" placeholder="Item Name" class="w-full p-2 mb-2 border rounded">
+                        <input type="number" id="item-price" placeholder="Price" class="w-full p-2 mb-2 border rounded">
+                        <select id="item-category" class="w-full p-2 mb-2 border rounded">
+                            <option>Digital Goods</option>
+                            <option>Physical Goods</option>
+                            <option>Services</option>
+                        </select>
+                        <button id="list-item" class="bg-green-500 text-white px-4 py-2 rounded">List Item</button>
+                    </div>
+                    <div class="col-span-2 bg-white p-4 rounded-lg">
+                        <h2 class="text-xl font-bold mb-4">Marketplace Listings</h2>
+                        <div id="marketplace-items" class="grid grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community-section" class="hidden">
+                <div class="bg-white p-4 rounded-lg">
+                    <div class="mb-4">
+                        <textarea id="post-content" class="w-full p-2 border rounded" placeholder="Create a post..."></textarea>
+                        <button id="create-post" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Post</button>
+                    </div>
+                    <div id="community-posts" class="space-y-4"></div>
+                </div>
+            </section>
+
+            <!-- Games Section -->
+            <section id="games-section" class="hidden">
+                <div class="grid grid-cols-4 gap-4" id="game-collection"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
